@@ -258,10 +258,7 @@
 
         renderer.setSize(cfg.width, cfg.height);
         renderer.setClearColor(0x000000, 0);
-
         canvas = renderer.domElement;
-        console.debug(canvas);
-
         document.body.appendChild(canvas);
 
         camera = new THREE.PerspectiveCamera(cfg.view_angle, aspect, cfg.near, cfg.far);
