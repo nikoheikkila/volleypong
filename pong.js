@@ -26,7 +26,7 @@
             width: 200,
             height: 30
         },
-        score_limit: 5
+        score_limit: 10
     };
 
     var aspect = cfg.width / cfg.height;
