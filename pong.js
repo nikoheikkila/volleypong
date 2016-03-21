@@ -16,7 +16,7 @@
         near: 0.1,
         far: 10000,
         field: {
-            width: 1000,
+            width: 1250,
             length: 2000
         },
         ball: {
@@ -31,7 +31,7 @@
 
     var aspect = cfg.width / cfg.height;
 
-    let container, renderer, camera, mainLight, canvas, scene, ball, player1, player2, field, running,
+    let container, renderer, camera, mainLight, canvas, sfx, scene, ball, player1, player2, field, running,
         player1Score, player2Score;
 
     class Field {
@@ -122,6 +122,7 @@
         }
 
         hitBallBack(paddle) {
+            sfx.play();
             ball.$velocity.x  = (ball.mesh.position.x - paddle.position.x) / 5;
             ball.$velocity.z *= -1;
         }
@@ -287,8 +288,7 @@
         player2 = addPaddle();
         player2.position.z = -cfg.field.length / 2 + 40;
 
-        //player1Score = document.querySelector('.player1-score').innerHTML;
-        //player2Score = document.querySelector('.player2-score').innerHTML;
+        sfx = document.querySelector('.ball-hit');
 
         mainLight = new THREE.HemisphereLight(getRandomColor(), getRandomColor());
         scene.add(mainLight);
