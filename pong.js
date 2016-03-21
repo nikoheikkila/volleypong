@@ -31,7 +31,7 @@
 
     var aspect = cfg.width / cfg.height;
 
-    let container, renderer, camera, mainLight, scene, ball, player1, player2, field, running,
+    let container, renderer, camera, mainLight, canvas, scene, ball, player1, player2, field, running,
         player1Score, player2Score;
 
     class Field {
@@ -166,7 +166,7 @@
 
         let paddleGeometry = new THREE.CubeGeometry(cfg.paddle.width, cfg.paddle.height, 10, 1, 1, 1),
             paddleMaterial = new THREE.MeshLambertMaterial({
-                color: 0xCCCCCC
+                color: getRandomColor()
             }),
             paddle = new THREE.Mesh(paddleGeometry, paddleMaterial);
 
@@ -246,13 +246,23 @@
         renderer.render(scene, camera);
     };
 
+    let getRandomColor = function color() {
+        return '#' + Math.floor(Math.random() * 16777215).toString(16);
+    };
+
     let init = function init() {
 
-        renderer = new THREE.WebGLRenderer();
+        renderer = new THREE.WebGLRenderer({
+            alpha: true
+        });
 
         renderer.setSize(cfg.width, cfg.height);
-        renderer.setClearColor(0xFCFCFC, 1);
-        document.body.appendChild(renderer.domElement);
+        renderer.setClearColor(0x000000, 0);
+
+        canvas = renderer.domElement;
+        console.debug(canvas);
+
+        document.body.appendChild(canvas);
 
         camera = new THREE.PerspectiveCamera(cfg.view_angle, aspect, cfg.near, cfg.far);
         camera.position.set(0, 250, cfg.field.length / 2 + 600);
@@ -263,14 +273,14 @@
         field = new Field(
             new THREE.CubeGeometry(cfg.field.width, 5, cfg.field.length, 1, 1, 1),
             new THREE.MeshLambertMaterial({
-                color: 0xF98233
+                color: getRandomColor()
             })
         );
 
         ball = new Ball(
             new THREE.SphereGeometry(cfg.ball.radius, 16, 16),
             new THREE.MeshLambertMaterial({
-                color: 0x0EE3FC
+                color: getRandomColor()
             })
         );
 
@@ -283,7 +293,7 @@
         //player1Score = document.querySelector('.player1-score').innerHTML;
         //player2Score = document.querySelector('.player2-score').innerHTML;
 
-        mainLight = new THREE.HemisphereLight(0xFFFFFF, 0x1C75A1);
+        mainLight = new THREE.HemisphereLight(getRandomColor(), getRandomColor());
         scene.add(mainLight);
 
         renderer.domElement.addEventListener('mousemove', containerMouseMove);
