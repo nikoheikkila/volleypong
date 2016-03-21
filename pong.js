@@ -25,7 +25,8 @@
         paddle: {
             width: 200,
             height: 30
-        }
+        },
+        score_limit: 5
     };
 
     var aspect = cfg.width / cfg.height;
@@ -198,24 +199,41 @@
         ball.resetBall();
     };
 
+    let endGame = function end(winner) {
+        alert("Congratulations to the winner " + winner + "!");
+        resetScore();
+        stopGame();
+    };
+
     let updateScore = function score(player) {
 
         var currentScore;
 
         if (player === "player1") {
-            console.debug("Player 1 scores");
             currentScore = parseInt(document.querySelector('.player1-score').innerHTML) + 1;
-            document.querySelector('.player1-score').innerHTML = currentScore;
+            if (currentScore < cfg.score_limit) {
+                document.querySelector('.player1-score').innerHTML = currentScore;
+            } else {
+                endGame("Player 1");
+            }
         } else if (player === "player2") {
-            console.debug("Player 2 scores");
             currentScore = parseInt(document.querySelector('.player2-score').innerHTML) + 1;
-            document.querySelector('.player2-score').innerHTML = currentScore;
+            if (currentScore < cfg.score_limit) {
+                document.querySelector('.player2-score').innerHTML = currentScore;
+            } else {
+                endGame("Player 2");
+            }
         } else {
             return false;
         }
 
         stopGame();
         return true;
+    };
+
+    let resetScore = function reset() {
+        document.querySelector('.player1-score').innerHTML = 0;
+        document.querySelector('.player2-score').innerHTML = 0;
     };
 
     let render = function render() {
