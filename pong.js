@@ -97,8 +97,13 @@
             if (this.isSideCollision())
                 this.$velocity.x *= -0.3;
 
-            if (this.isPastPaddle1() || this.isPastPaddle2())
-                stopGame();
+            if (this.isPastPaddle1()) {
+                updateScore("player2");
+            }
+
+            if (this.isPastPaddle2()) {
+                updateScore("player1");
+            }
 
             if (this.$stopped)
                 return;
@@ -193,9 +198,25 @@
         ball.resetBall();
     };
 
-    let updateScore = function score(playerScore) {
-        playerScore += 1;
-    }();
+    let updateScore = function score(player) {
+
+        var currentScore;
+
+        if (player === "player1") {
+            console.debug("Player 1 scores");
+            currentScore = parseInt(document.querySelector('.player1-score').innerHTML) + 1;
+            document.querySelector('.player1-score').innerHTML = currentScore;
+        } else if (player === "player2") {
+            console.debug("Player 2 scores");
+            currentScore = parseInt(document.querySelector('.player2-score').innerHTML) + 1;
+            document.querySelector('.player2-score').innerHTML = currentScore;
+        } else {
+            return false;
+        }
+
+        stopGame();
+        return true;
+    };
 
     let render = function render() {
 
@@ -241,8 +262,8 @@
         player2 = addPaddle();
         player2.position.z = -cfg.field.length / 2 + 40;
 
-        player1Score = document.querySelector('.player1-score').innerHTML;
-        player2Score = document.querySelector('.player2-score').innerHTML;
+        //player1Score = document.querySelector('.player1-score').innerHTML;
+        //player2Score = document.querySelector('.player2-score').innerHTML;
 
         mainLight = new THREE.HemisphereLight(0xFFFFFF, 0x1C75A1);
         scene.add(mainLight);
