@@ -3,6 +3,8 @@
 [**Lähdekoodit**](https://github.com/nikoheikkila/volleypong)  
 [**Demo**](http://nikoheikkila.com/misc/projects/volleypong)
 
+![Kuvakaappaus: Volleypong](https://tim.jyu.fi/images/115054/volleypong.png)
+
 ### Raportti
 
 Syklin ensimmäistä prototyyppiä varten toteutin Pong-kloonin JavaScriptin THREE.js -kirjaston avulla. Kyseessä olevaan kirjastoon olen tutustunut aiemmin tietokonegrafiikan perusteita käsittelevän kurssin lomassa, joten päätin tutustua tarkemmin, miten itse peliohjelmointi onnistuu sillä.
