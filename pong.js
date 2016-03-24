@@ -1,7 +1,7 @@
 /**
  * 3D Pong in THREE.js
  * @author Niko Heikkilä <yo@nikoheikkila.com>
- * @version 1.0-rc1
+ * @version 1.0
  */
 
 /**
@@ -59,8 +59,9 @@
         init() {
             let fieldGeometry = this.fieldGeometry,
                 fieldMaterial = this.fieldMaterial,
-                field         = new THREE.Mesh(fieldGeometry, fieldMaterial);
-            field.position.set(0, -50, 0);
+                field         = new THREE.Mesh(fieldGeometry, fieldMaterial),
+                x = 0, y = -50, z = 0;
+            field.position.set(x, y, z);
             scene.add(field);
         }
     }
@@ -83,9 +84,10 @@
         init() {
             let ballGeometry = this.ballGeometry,
                 ballMaterial = this.ballMaterial,
-                mesh         = new THREE.Mesh(ballGeometry, ballMaterial);
+                mesh         = new THREE.Mesh(ballGeometry, ballMaterial),
+                x = 0, y = 0, z = 0;
 
-            mesh.position.set(0, 0, 0);
+            mesh.position.set(x, y, z);
             return mesh;
         }
 
@@ -110,6 +112,8 @@
          */
         processFrame() {
 
+            let vx = -0.3;
+
             /* If the ball is not moving, launch it */
             if (!this.$velocity)
                 this.launchBall();
@@ -124,7 +128,7 @@
 
             /* Side collision should slow the ball down a bit */
             if (this.isSideCollision())
-                this.$velocity.x *= -0.3;
+                this.$velocity.x *= vx;
 
             /* Detect if the ball passes Player 1 */
             if (this.isPastPaddle1()) {
@@ -193,8 +197,10 @@
 
         /* Reset ball status */
         resetBall() {
-            this.mesh.position.set(0, 0, 0);
-            this.$velocity = null;
+            let x = 0, y = 0, z = 0,
+                velocity = null;
+            this.mesh.position.set(x, y, z);
+            this.$velocity = velocity;
         }
     }
 
@@ -220,14 +226,16 @@
      */
     let processCPUPaddle = function cpu() {
 
-        var ballPosition = ball.mesh.position,
-            cpuPosition  = player2.position;
+        let ballPosition = ball.mesh.position,
+            cpuPosition  = player2.position,
+            dx           = 100,
+            x            = 3;
 
-        if (cpuPosition.x - 100 > ballPosition.x)
-            cpuPosition.x -= Math.min(cpuPosition.x - ballPosition.x, 3);
+        if (cpuPosition.x - dx > ballPosition.x)
+            cpuPosition.x -= Math.min(cpuPosition.x - ballPosition.x, x);
 
-        if (cpuPosition.x + 100 > ballPosition.x) {
-            cpuPosition.x -= Math.min(cpuPosition.x - ballPosition.x, 3);
+        if (cpuPosition.x + dx > ballPosition.x) {
+            cpuPosition.x -= Math.min(cpuPosition.x - ballPosition.x, x);
         }
     };
 
@@ -320,7 +328,8 @@
      * @desc For additional visual freakiness
      */
     let getRandomColor = function color() {
-        return '#' + Math.floor(Math.random() * 16777215).toString(16);
+        const INT_MAX = 16777215, STR_LEN = 16;
+        return '#' + Math.floor(Math.random() * INT_MAX).toString(STR_LEN);
     };
 
     /* Set up the game assets here */
@@ -330,13 +339,16 @@
             alpha: true
         });
 
+        let bgColor = 0x000000;
+
         renderer.setSize(cfg.width, cfg.height);
-        renderer.setClearColor(0x000000, 0);
+        renderer.setClearColor(bgColor, 0);
         canvas = renderer.domElement;
         document.body.appendChild(canvas);
 
+        let cx = 0, cy = 250, cz = cfg.field.length / 2 + 600;
         camera = new THREE.PerspectiveCamera(cfg.view_angle, aspect, cfg.near, cfg.far);
-        camera.position.set(0, 250, cfg.field.length / 2 + 600);
+        camera.position.set(cx, cy, cz);
 
         scene = new THREE.Scene();
         scene.add(camera);
